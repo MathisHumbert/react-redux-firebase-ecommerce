@@ -1,16 +1,43 @@
-import React from 'react'
-import logo from '../assets/logo.svg'
-import { Link } from 'react-router-dom'
-import { useProductsContext } from '../context/products_context'
-import { FaTimes } from 'react-icons/fa'
-import { links } from '../utils/constants'
-import styled from 'styled-components'
-import CartButtons from './CartButtons'
-import { useUserContext } from '../context/user_context'
+import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import { closeSidebar } from '../redux/features/productsSlice';
+import logo from '../assets/logo.svg';
+import { links } from '../utils/constants';
+import CartButtons from './CartButtons';
 
 const Sidebar = () => {
-  return <h4>sidebar</h4>
-}
+  const dispatch = useDispatch();
+  const { isSidebarOpen } = useSelector((state) => state.products);
+
+  return (
+    <SidebarContainer>
+      <aside className={isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}>
+        <div className='sidebar-header'>
+          <img src={logo} alt='coding-addict' />
+          <button
+            className='close-btn'
+            onClick={() => dispatch(closeSidebar())}
+          >
+            <FaTimes />
+          </button>
+        </div>
+        <ul className='links'>
+          {links.map((link) => {
+            const { id, text, url } = link;
+            return (
+              <li key={id} onClick={() => dispatch(closeSidebar())}>
+                <Link to={url}>{text}</Link>
+              </li>
+            );
+          })}
+        </ul>
+        <CartButtons />
+      </aside>
+    </SidebarContainer>
+  );
+};
 
 const SidebarContainer = styled.div`
   text-align: center;
@@ -81,6 +108,6 @@ const SidebarContainer = styled.div`
       display: none;
     }
   }
-`
+`;
 
-export default Sidebar
+export default Sidebar;
