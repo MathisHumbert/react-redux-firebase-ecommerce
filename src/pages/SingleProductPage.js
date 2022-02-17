@@ -33,7 +33,18 @@ const SingleProductPage = () => {
     return <Error />;
   }
 
-  const { name, images, reviews, stars } = product;
+  const {
+    name,
+    images,
+    reviews,
+    stars,
+    price,
+    description,
+    stock,
+    company,
+    colors,
+  } = product;
+  console.log(product);
 
   return (
     <Wrapper>
@@ -47,6 +58,22 @@ const SingleProductPage = () => {
           <section className='content'>
             <h2>{name}</h2>
             <Stars reviews={reviews} stars={stars} />
+            <h5 className='price'>{formatPrice(price)}</h5>
+            <p className='desc'>{description}</p>
+            <p className='info'>
+              <span>Available :</span>
+              {stock > 0 ? 'in stock' : 'out of stock'}
+            </p>
+            <p className='info'>
+              <span>SKU :</span>
+              {id}
+            </p>
+            <p className='info'>
+              <span>Brand :</span>
+              {company}
+            </p>
+            <hr />
+            {stock > 0 && <AddToCart />}
           </section>
         </div>
       </div>

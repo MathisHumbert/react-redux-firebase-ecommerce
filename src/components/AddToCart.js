@@ -1,13 +1,56 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { FaCheck } from 'react-icons/fa'
-import { useCartContext } from '../context/cart_context'
-import AmountButtons from './AmountButtons'
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FaCheck } from 'react-icons/fa';
+import AmountButtons from './AmountButtons';
 
 const AddToCart = () => {
-  return <h4>addToCart </h4>
-}
+  const { product } = useSelector((state) => state.products);
+
+  const [colorIndex, setColorIndex] = useState(0);
+  const [total, setTotal] = useState(1);
+
+  const incTotal = () => {
+    if (product.stock === total) return;
+    setTotal((prevState) => prevState + 1);
+  };
+
+  const decTotal = () => {
+    if (total === 1) return;
+    setTotal((prevState) => prevState - 1);
+  };
+
+  return (
+    <Wrapper>
+      <div className='colors'>
+        <span>colors :</span>
+        <div>
+          {product.colors.map((color, index) => {
+            return (
+              <button
+                key={index}
+                className={
+                  colorIndex === index ? 'color-btn active' : 'color-btn'
+                }
+                style={{ background: color }}
+                onClick={() => setColorIndex(index)}
+              >
+                {colorIndex === index && <FaCheck />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <div className='btn-container'>
+        <AmountButtons incTotal={incTotal} decTotal={decTotal} total={total} />
+        <Link to='/cart' className='btn'>
+          add to cart
+        </Link>
+      </div>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   margin-top: 2rem;
@@ -53,5 +96,5 @@ const Wrapper = styled.section`
     margin-top: 1rem;
     width: 140px;
   }
-`
-export default AddToCart
+`;
+export default AddToCart;

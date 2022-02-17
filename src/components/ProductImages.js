@@ -14,6 +14,7 @@ const ProductImages = ({ images }) => {
               alt='gallery-img'
               className={index === imageIndex ? 'active' : ''}
               onClick={() => setImageIndex(index)}
+              key={index}
             />
           );
         })}
