@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const url = '';
+const url = 'https://course-api.com/react-store-products';
 
 const initialState = {
   products: [],
+  featuredProducts: [],
   isLoading: false,
   isError: false,
+  isSuccess: false,
   isSidebarOpen: false,
 };
 
@@ -13,7 +16,7 @@ export const getProducts = createAsyncThunk('products/getAll', async () => {
   try {
     // GET URL
     const { data } = await axios(url);
-    console.log(data);
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -28,6 +31,27 @@ export const productsSlice = createSlice({
     },
     closeSidebar: (state) => {
       state.isSidebarOpen = false;
+    },
+  },
+  extraReducers: {
+    [getProducts.pending]: (state) => {
+      state.isLoading = true;
+      state.isError = false;
+      state.isSuccess = false;
+    },
+    [getProducts.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.products = action.payload;
+      state.featuredProducts = action.payload.filter(
+        (product) => product.featured === true
+      );
+    },
+    [getProducts.rejected]: (state) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.products = [];
+      state.featuredProducts = [];
     },
   },
 });
