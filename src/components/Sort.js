@@ -5,8 +5,9 @@ import { toggleGridView, updateSort } from '../redux/features/filterSlice';
 
 const Sort = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
-  const { gridView, sort } = useSelector((state) => state.filter);
+  const { gridView, sort, filteredProducts } = useSelector(
+    (state) => state.filter
+  );
 
   return (
     <Wrapper>
@@ -24,7 +25,7 @@ const Sort = () => {
           <BsList />
         </button>
       </div>
-      <p>{products.length} products found</p>
+      <p>{filteredProducts.length} products found</p>
       <hr />
       <form>
         <label htmlFor='sort'>sort by</label>

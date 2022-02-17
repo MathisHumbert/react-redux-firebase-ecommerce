@@ -48,9 +48,87 @@ export const filterSlice = createSlice({
       const { name, value } = action.payload;
       state.filters[name] = value;
     },
+    filterProducts: (state) => {
+      let tempFilteredProducts = state.allProducts;
+
+      const { search, category, company, color, price, shipping } =
+        state.filters;
+
+      // SEARCH
+      if (search) {
+        tempFilteredProducts = tempFilteredProducts.filter(
+          (item) => item.name.includes(search) === true
+        );
+      }
+
+      // CATEGORY
+      if (category !== 'all') {
+        tempFilteredProducts = tempFilteredProducts.filter(
+          (item) => item.category === category
+        );
+      }
+
+      // COMPANY
+      if (company !== 'all') {
+        tempFilteredProducts = tempFilteredProducts.filter(
+          (item) => item.company === company
+        );
+      }
+
+      // COLOR
+      if (color !== 'all') {
+        tempFilteredProducts = tempFilteredProducts.filter(
+          (item) => item.colors.includes(color) === true
+        );
+      }
+
+      // PRICE
+      tempFilteredProducts = tempFilteredProducts.filter(
+        (item) => Number(item.price) <= price === true
+      );
+
+      // SHIPPING
+      if (shipping === true) {
+        tempFilteredProducts = tempFilteredProducts.filter(
+          (item) => item.shipping === true
+        );
+      }
+
+      // SORT
+      if (state.sort === 'price-lowest') {
+        tempFilteredProducts = tempFilteredProducts.sort(
+          (a, b) => a.price - b.price
+        );
+      }
+      if (state.sort === 'price-highest') {
+        tempFilteredProducts = tempFilteredProducts.sort(
+          (a, b) => b.price - a.price
+        );
+      }
+      if (state.sort === 'name-a') {
+        tempFilteredProducts = tempFilteredProducts.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+      }
+      if (state.sort === 'name-z') {
+        tempFilteredProducts = tempFilteredProducts.sort((a, b) =>
+          b.name.localeCompare(a.name)
+        );
+      }
+
+      state.filteredProducts = tempFilteredProducts;
+    },
   },
 });
 
-export const { toggleGridView, updateSort, setProducts, updateFilters } =
-  filterSlice.actions;
+export const {
+  toggleGridView,
+  updateSort,
+  setProducts,
+  updateFilters,
+  filterProducts,
+} = filterSlice.actions;
 export default filterSlice.reducer;
+
+// CLEAR ITEMS
+// SORT PRODUCTS

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
 import { getUniqueValues, formatPrice } from '../utils/helpers';
-import { updateFilters } from '../redux/features/filterSlice';
+import { updateFilters, filterProducts } from '../redux/features/filterSlice';
 
 const Filters = () => {
   const dispatch = useDispatch();
@@ -29,6 +29,7 @@ const Filters = () => {
     }
 
     dispatch(updateFilters({ name, value }));
+    dispatch(filterProducts());
   };
 
   const { category, color, company, shipping, price, search } = filters;
