@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
-import { useProductsContext } from '../context/products_context'
-import { single_product_url as url } from '../utils/constants'
-import { formatPrice } from '../utils/helpers'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { formatPrice } from '../utils/helpers';
+import { getProduct } from '../redux/features/productsSlice';
 import {
   Loading,
   Error,
@@ -10,13 +10,49 @@ import {
   AddToCart,
   Stars,
   PageHero,
-} from '../components'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+} from '../components';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const SingleProductPage = () => {
-  return <h4>single product page</h4>
-}
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { isProductSuccess, isProductLoading, isProductError, product } =
+    useSelector((state) => state.products);
+
+  useEffect(() => {
+    if (isProductSuccess) return;
+    dispatch(getProduct(id));
+  }, []);
+
+  if (isProductLoading || product.length < 1) {
+    return <Loading />;
+  }
+
+  if (isProductError) {
+    return <Error />;
+  }
+
+  const { name, images, reviews, stars } = product;
+
+  return (
+    <Wrapper>
+      <PageHero history='products' page={name} />
+      <div className='section section-center page'>
+        <Link to='/products' className='btn'>
+          back to products
+        </Link>
+        <div className='product-center'>
+          <ProductImages images={images} />
+          <section className='content'>
+            <h2>{name}</h2>
+            <Stars reviews={reviews} stars={stars} />
+          </section>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.main`
   .product-center {
@@ -50,6 +86,6 @@ const Wrapper = styled.main`
       font-size: 1.25rem;
     }
   }
-`
+`;
 
-export default SingleProductPage
+export default SingleProductPage;

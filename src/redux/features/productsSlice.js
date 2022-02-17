@@ -1,21 +1,34 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const url = 'https://course-api.com/react-store-products';
+const products_url = 'https://course-api.com/react-store-products';
+const single_product_url = `https://course-api.com/react-store-single-product?id=`;
 
 const initialState = {
   products: [],
   featuredProducts: [],
-  isLoading: false,
-  isError: false,
-  isSuccess: false,
+  product: [],
+  isProductsLoading: false,
+  isProductsError: false,
+  isProductsSuccess: false,
+  isProductLoading: false,
+  isProductError: false,
+  isProductSuccess: false,
   isSidebarOpen: false,
 };
 
 export const getProducts = createAsyncThunk('products/getAll', async () => {
   try {
-    // GET URL
-    const { data } = await axios(url);
+    const { data } = await axios(products_url);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getProduct = createAsyncThunk('products/get', async (id) => {
+  try {
+    const { data } = await axios(`${single_product_url}${id}`);
     return data;
   } catch (error) {
     console.log(error);
@@ -35,23 +48,38 @@ export const productsSlice = createSlice({
   },
   extraReducers: {
     [getProducts.pending]: (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
+      state.isProductsLoading = true;
+      state.isProductsError = false;
+      state.isProductsSuccess = false;
     },
     [getProducts.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      state.isProductsLoading = false;
+      state.isProductsSuccess = true;
       state.products = action.payload;
       state.featuredProducts = action.payload.filter(
         (product) => product.featured === true
       );
     },
     [getProducts.rejected]: (state) => {
-      state.isLoading = false;
-      state.isError = true;
+      state.isProductsLoading = false;
+      state.isProductsError = true;
       state.products = [];
       state.featuredProducts = [];
+    },
+    [getProduct.pending]: (state) => {
+      state.isProductLoading = true;
+      state.isProductError = false;
+      state.isProductSuccess = false;
+    },
+    [getProduct.fulfilled]: (state, action) => {
+      state.isProductLoading = false;
+      state.isProductSuccess = true;
+      state.product = action.payload;
+    },
+    [getProduct.rejected]: (state) => {
+      state.isProductLoading = false;
+      state.isProductError = true;
+      state.product = [];
     },
   },
 });

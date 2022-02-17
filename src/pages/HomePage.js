@@ -5,10 +5,10 @@ import { getProducts } from '../redux/features/productsSlice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { isSuccess } = useSelector((state) => state.products);
+  const { isProductsSuccess } = useSelector((state) => state.products);
 
   useEffect(() => {
-    if (isSuccess) return;
+    if (isProductsSuccess) return;
 
     dispatch(getProducts());
   }, []);
