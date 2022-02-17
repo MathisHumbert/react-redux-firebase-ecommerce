@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
 import { getUniqueValues, formatPrice } from '../utils/helpers';
-import { updateFilters, filterProducts } from '../redux/features/filterSlice';
+import {
+  updateFilters,
+  filterProducts,
+  clearFilters,
+} from '../redux/features/filterSlice';
 
 const Filters = () => {
   const dispatch = useDispatch();
@@ -29,7 +34,6 @@ const Filters = () => {
     }
 
     dispatch(updateFilters({ name, value }));
-    dispatch(filterProducts());
   };
 
   const { category, color, company, shipping, price, search } = filters;
@@ -37,6 +41,10 @@ const Filters = () => {
   const categories = getUniqueValues('category', allProducts);
   const companies = getUniqueValues('company', allProducts);
   const colors = getUniqueValues('colors', allProducts);
+
+  useEffect(() => {
+    dispatch(filterProducts());
+  }, [filters]);
 
   return (
     <Wrapper>
@@ -124,17 +132,24 @@ const Filters = () => {
               onChange={handleFormChange}
             />
           </div>
+          <div className='form-control shipping'>
+            <label htmlFor='shipping'>free shipping</label>
+            <input
+              type='checkbox'
+              name='shipping'
+              id='shipping'
+              checked={shipping}
+              onChange={handleFormChange}
+            />
+          </div>
         </form>
-        <div className='form-control shipping'>
-          <label htmlFor='shipping'>free shipping</label>
-          <input
-            type='checkbox'
-            name='shipping'
-            id='shipping'
-            checked={shipping}
-            onChange={handleFormChange}
-          />
-        </div>
+        <button
+          type='button'
+          className='clear-btn'
+          onClick={() => dispatch(clearFilters())}
+        >
+          clear filters
+        </button>
       </div>
     </Wrapper>
   );

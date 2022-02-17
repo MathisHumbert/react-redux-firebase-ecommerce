@@ -30,6 +30,14 @@ const ProductList = () => {
     return <Loading />;
   }
 
+  if (filteredProducts.length === 0) {
+    return (
+      <h5 style={{ textTransform: 'none' }}>
+        Sorry, no products matched your search.
+      </h5>
+    );
+  }
+
   if (gridView) {
     return <GridView products={filteredProducts} />;
   } else {

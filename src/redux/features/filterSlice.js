@@ -84,7 +84,9 @@ export const filterSlice = createSlice({
 
       // PRICE
       tempFilteredProducts = tempFilteredProducts.filter(
-        (item) => Number(item.price) <= price === true
+        (item) =>
+          // eslint-disable-next-line
+          Number(item.price) <= price === true
       );
 
       // SHIPPING
@@ -118,6 +120,16 @@ export const filterSlice = createSlice({
 
       state.filteredProducts = tempFilteredProducts;
     },
+    clearFilters: (state) => {
+      state.filters = {
+        search: '',
+        category: 'all',
+        company: 'all',
+        color: 'all',
+        price: 309999,
+        shipping: false,
+      };
+    },
   },
 });
 
@@ -127,8 +139,6 @@ export const {
   setProducts,
   updateFilters,
   filterProducts,
+  clearFilters,
 } = filterSlice.actions;
 export default filterSlice.reducer;
-
-// CLEAR ITEMS
-// SORT PRODUCTS
