@@ -6,6 +6,14 @@ const initialState = {
   isFilteredProductSuccess: false,
   gridView: false,
   sort: 'price-lowest',
+  filters: {
+    search: '',
+    category: 'all',
+    company: 'all',
+    color: 'all',
+    maxPrice: 3099,
+    freeShipping: false,
+  },
 };
 
 export const filterSlice = createSlice({
@@ -29,9 +37,20 @@ export const filterSlice = createSlice({
       if (action.payload === 'price-highest') {
         state.filteredProducts.sort((a, b) => b.price - a.price);
       }
+      if (action.payload === 'name-a') {
+        state.filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+      }
+      if (action.payload === 'name-z') {
+        state.filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+      }
+    },
+    updateFilters: (state, action) => {
+      const { name, value } = action.payload;
+      state.filters[name] = value;
     },
   },
 });
 
-export const { toggleGridView, updateSort, setProducts } = filterSlice.actions;
+export const { toggleGridView, updateSort, setProducts, updateFilters } =
+  filterSlice.actions;
 export default filterSlice.reducer;

@@ -1,12 +1,119 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useFilterContext } from '../context/filter_context'
-import { getUniqueValues, formatPrice } from '../utils/helpers'
-import { FaCheck } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { FaCheck } from 'react-icons/fa';
+import { getUniqueValues, formatPrice } from '../utils/helpers';
+import { updateFilters } from '../redux/features/filterSlice';
 
 const Filters = () => {
-  return <h4>filters</h4>
-}
+  const dispatch = useDispatch();
+  const { filters, allProducts } = useSelector((state) => state.filter);
+
+  console.log(filters);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const handleFormChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === 'category') {
+      value = e.target.textContent;
+    }
+    if (name === 'color') {
+      value = e.target.dataset.color;
+    }
+    console.log(e.target.name, e.target.value);
+    dispatch(updateFilters({ name, value }));
+  };
+
+  const { category, color, company, freeShipping, maxPrice, search } = filters;
+
+  const categories = getUniqueValues('category', allProducts);
+  const companies = getUniqueValues('company', allProducts);
+  const colors = getUniqueValues('colors', allProducts);
+
+  return (
+    <Wrapper>
+      <div className='content'>
+        <form onSubmit={onSubmit}>
+          {/* SEARCH */}
+          <div className='form-control'>
+            <input
+              type='text'
+              name='search'
+              placeholder='search'
+              className='search-input'
+              value={search}
+              onChange={handleFormChange}
+            />
+          </div>
+          {/* CATEGORY */}
+          <div className='form-control'>
+            <h5>category</h5>
+            {categories.map((item, index) => {
+              return (
+                <button
+                  key={index}
+                  type='button'
+                  name='category'
+                  className={category === item ? 'active' : ''}
+                  onClick={handleFormChange}
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </div>
+          {/* COMPANY */}
+          <div className='form-control'>
+            <h5>company</h5>
+            <select
+              name='company'
+              className='company'
+              value={company}
+              onChange={handleFormChange}
+            >
+              {companies.map((item, index) => {
+                return (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* COLORS */}
+          <div className='form-control'>
+            <h5>colors</h5>
+            <div className='colors'>
+              {colors.map((item, index) => {
+                return (
+                  <button
+                    key={index}
+                    type='button'
+                    name='color'
+                    data-color={item}
+                    onClick={handleFormChange}
+                    className={`${item === 'all' ? 'all-btn' : 'color-btn'} ${
+                      color === item ? 'active' : ''
+                    }`}
+                    style={{ background: `${item !== 'all' && item}` }}
+                  >
+                    {item === 'all' && item}
+                    {item === color && item !== 'all' && <FaCheck />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className='form-control'></div>
+        </form>
+      </div>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   .form-control {
@@ -105,6 +212,6 @@ const Wrapper = styled.section`
       top: 1rem;
     }
   }
-`
+`;
 
-export default Filters
+export default Filters;
