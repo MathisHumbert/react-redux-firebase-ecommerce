@@ -1,10 +1,23 @@
-import React from 'react'
-import { useFilterContext } from '../context/filter_context'
-import GridView from './GridView'
-import ListView from './ListView'
+import { useSelector } from 'react-redux';
+import GridView from './GridView';
+import ListView from './ListView';
+import Loading from './Loading';
 
 const ProductList = () => {
-  return <h4>product list</h4>
-}
+  const { gridView } = useSelector((state) => state.filter);
+  const { products, isProductsLoading } = useSelector(
+    (state) => state.products
+  );
 
-export default ProductList
+  if (isProductsLoading) {
+    return <Loading />;
+  }
+
+  if (gridView) {
+    return <GridView products={products} />;
+  } else {
+    return <ListView products={products} />;
+  }
+};
+
+export default ProductList;
