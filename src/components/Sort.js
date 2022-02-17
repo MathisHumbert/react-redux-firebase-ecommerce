@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { BsFillGridFill, BsList } from 'react-icons/bs';
-import { toggleGridView } from '../redux/features/filterSlice';
+import { toggleGridView, updateSort } from '../redux/features/filterSlice';
 
 const Sort = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
-  const { gridView } = useSelector((state) => state.filter);
+  const { gridView, sort } = useSelector((state) => state.filter);
 
   return (
     <Wrapper>
@@ -28,7 +28,13 @@ const Sort = () => {
       <hr />
       <form>
         <label htmlFor='sort'>sort by</label>
-        <select name='sort' id='sort' className='sort-input'>
+        <select
+          name='sort'
+          id='sort'
+          className='sort-input'
+          value={sort}
+          onChange={(e) => dispatch(updateSort(e.target.value))}
+        >
           <option value='price-lowest'>price (lowest)</option>
           <option value='price-highest'>price (highest)</option>
           <option value='name-a'>name (a - z)</option>

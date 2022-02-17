@@ -1,22 +1,39 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setProducts, updateSort } from '../redux/features/filterSlice';
 import GridView from './GridView';
 import ListView from './ListView';
 import Loading from './Loading';
 
 const ProductList = () => {
-  const { gridView } = useSelector((state) => state.filter);
-  const { products, isProductsLoading } = useSelector(
+  const dispatch = useDispatch();
+  const { gridView, isFilteredProductSuccess, filteredProducts } = useSelector(
+    (state) => state.filter
+  );
+  const { products, isProductsSuccess } = useSelector(
     (state) => state.products
   );
 
-  if (isProductsLoading) {
+  // set products data to filter
+  useEffect(() => {
+    if (isFilteredProductSuccess || !isProductsSuccess) return;
+    dispatch(setProducts(products));
+  }, [products]);
+
+  // sort the data at the begining
+  useEffect(() => {
+    if (!isFilteredProductSuccess) return;
+    dispatch(updateSort('price-lowest'));
+  }, [isFilteredProductSuccess]);
+
+  if (!isFilteredProductSuccess) {
     return <Loading />;
   }
 
   if (gridView) {
-    return <GridView products={products} />;
+    return <GridView products={filteredProducts} />;
   } else {
-    return <ListView products={products} />;
+    return <ListView products={filteredProducts} />;
   }
 };
 
