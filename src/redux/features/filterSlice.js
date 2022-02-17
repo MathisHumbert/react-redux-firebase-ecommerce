@@ -11,8 +11,8 @@ const initialState = {
     category: 'all',
     company: 'all',
     color: 'all',
-    maxPrice: 3099,
-    freeShipping: false,
+    price: 309999,
+    shipping: false,
   },
 };
 

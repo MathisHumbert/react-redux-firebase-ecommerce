@@ -24,11 +24,14 @@ const Filters = () => {
     if (name === 'color') {
       value = e.target.dataset.color;
     }
-    console.log(e.target.name, e.target.value);
+    if (name === 'shipping') {
+      value = e.target.checked;
+    }
+
     dispatch(updateFilters({ name, value }));
   };
 
-  const { category, color, company, freeShipping, maxPrice, search } = filters;
+  const { category, color, company, shipping, price, search } = filters;
 
   const categories = getUniqueValues('category', allProducts);
   const companies = getUniqueValues('company', allProducts);
@@ -108,8 +111,29 @@ const Filters = () => {
               })}
             </div>
           </div>
-          <div className='form-control'></div>
+          <div className='form-control'>
+            <h5>price</h5>
+            <p className='price'>{formatPrice(price)}</p>
+            <input
+              type='range'
+              name='price'
+              min='0'
+              max='309999'
+              value={price}
+              onChange={handleFormChange}
+            />
+          </div>
         </form>
+        <div className='form-control shipping'>
+          <label htmlFor='shipping'>free shipping</label>
+          <input
+            type='checkbox'
+            name='shipping'
+            id='shipping'
+            checked={shipping}
+            onChange={handleFormChange}
+          />
+        </div>
       </div>
     </Wrapper>
   );
