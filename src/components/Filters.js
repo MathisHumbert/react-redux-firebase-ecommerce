@@ -13,8 +13,6 @@ const Filters = () => {
   const dispatch = useDispatch();
   const { filters, allProducts } = useSelector((state) => state.filter);
 
-  console.log(filters);
-
   const onSubmit = (e) => {
     e.preventDefault();
   };

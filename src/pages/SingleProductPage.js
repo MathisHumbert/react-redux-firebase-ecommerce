@@ -33,18 +33,8 @@ const SingleProductPage = () => {
     return <Error />;
   }
 
-  const {
-    name,
-    images,
-    reviews,
-    stars,
-    price,
-    description,
-    stock,
-    company,
-    colors,
-  } = product;
-  console.log(product);
+  const { name, images, reviews, stars, price, description, stock, company } =
+    product;
 
   return (
     <Wrapper>

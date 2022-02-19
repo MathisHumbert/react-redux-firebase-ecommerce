@@ -18,13 +18,14 @@ const ProductList = () => {
   useEffect(() => {
     if (isFilteredProductSuccess || !isProductsSuccess) return;
     dispatch(setProducts(products));
+    // eslint-disable-next-line
   }, [products]);
 
   // sort the data at the begining
   useEffect(() => {
     if (!isFilteredProductSuccess) return;
     dispatch(updateSort('price-lowest'));
-  }, [isFilteredProductSuccess]);
+  }, [isFilteredProductSuccess, dispatch]);
 
   if (!isFilteredProductSuccess) {
     return <Loading />;

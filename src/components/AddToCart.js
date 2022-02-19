@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
+import { addItemToCart } from '../redux/features/cartSlice';
 import AmountButtons from './AmountButtons';
 
 const AddToCart = () => {
+  const dispatch = useDispatch();
   const { product } = useSelector((state) => state.products);
 
   const [colorIndex, setColorIndex] = useState(0);
@@ -19,6 +21,23 @@ const AddToCart = () => {
   const decTotal = () => {
     if (total === 1) return;
     setTotal((prevState) => prevState - 1);
+  };
+
+  const handleAddToCart = () => {
+    const { colors, id, price, name, images } = product;
+    const color = colors[colorIndex];
+    console.log(color);
+    let cartId = `${id}${color}`;
+    const item = {
+      id: cartId,
+      name,
+      color,
+      price,
+      img: images[0],
+      total,
+    };
+
+    dispatch(addItemToCart({ cartItem: item, total }));
   };
 
   return (
@@ -44,7 +63,7 @@ const AddToCart = () => {
       </div>
       <div className='btn-container'>
         <AmountButtons incTotal={incTotal} decTotal={decTotal} total={total} />
-        <Link to='/cart' className='btn'>
+        <Link to='/cart' className='btn' onClick={handleAddToCart}>
           add to cart
         </Link>
       </div>

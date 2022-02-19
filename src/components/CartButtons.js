@@ -1,21 +1,31 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useProductsContext } from '../context/products_context';
-import { useCartContext } from '../context/cart_context';
-import { useUserContext } from '../context/user_context';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeSidebar } from '../redux/features/productsSlice';
+import { toggleCartInfo } from '../redux/features/cartSlice';
 
 const CartButtons = () => {
+  const dispatch = useDispatch();
+  const { cart, total } = useSelector((state) => state.cart);
   const loggedIn = false;
+
+  useEffect(() => {
+    dispatch(toggleCartInfo());
+  }, [cart]);
 
   return (
     <Wrapper className='cart-btn-wrapper'>
-      <Link to='/cart' className='cart-btn'>
+      <Link
+        to='/cart'
+        className='cart-btn'
+        onClick={() => dispatch(closeSidebar())}
+      >
         Cart
         <span className='cart-container'>
           <FaShoppingCart />
-          <span className='cart-value'>0</span>
+          <span className='cart-value'>{total}</span>
         </span>
       </Link>
       {/* LOGIN FUNCTIONALITY */}
