@@ -26,8 +26,8 @@ const AddToCart = () => {
   const handleAddToCart = () => {
     const { colors, id, price, name, images } = product;
     const color = colors[colorIndex];
-    console.log(color);
     let cartId = `${id}${color}`;
+
     const item = {
       id: cartId,
       name,

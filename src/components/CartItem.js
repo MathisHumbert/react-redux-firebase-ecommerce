@@ -1,12 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { formatPrice } from '../utils/helpers'
-import AmountButtons from './AmountButtons'
-import { FaTrash } from 'react-icons/fa'
-import { useCartContext } from '../context/cart_context'
-const CartItem = () => {
-  return <h4>cart item</h4>
-}
+import styled from 'styled-components';
+import { FaTrash } from 'react-icons/fa';
+import { formatPrice } from '../utils/helpers';
+import AmountButtons from './AmountButtons';
+
+const CartItem = ({ color, id, img, name, price, total }) => {
+  return <Wrapper>cart item</Wrapper>;
+};
 
 const Wrapper = styled.article`
   .subtotal {
@@ -142,6 +141,6 @@ const Wrapper = styled.article`
       }
     }
   }
-`
+`;
 
-export default CartItem
+export default CartItem;

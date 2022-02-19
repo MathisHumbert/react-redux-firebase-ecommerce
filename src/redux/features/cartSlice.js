@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+
 const initialState = {
-  cart: [],
+  cart: localCart,
   amount: 0,
   total: 0,
 };
@@ -13,7 +15,6 @@ const cartSlice = createSlice({
     addItemToCart: (state, action) => {
       const { total, cartItem } = action.payload;
       const { id } = action.payload.cartItem;
-      console.log(id);
       let itemAlreadyInTheCart = false;
 
       state.cart.forEach((item) => {
@@ -31,6 +32,8 @@ const cartSlice = createSlice({
       } else {
         state.cart.push(cartItem);
       }
+
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     toggleCartInfo: (state) => {
       const { amount, total } = state.cart.reduce(
