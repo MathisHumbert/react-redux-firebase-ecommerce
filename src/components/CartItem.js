@@ -1,10 +1,51 @@
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { FaTrash } from 'react-icons/fa';
 import { formatPrice } from '../utils/helpers';
 import AmountButtons from './AmountButtons';
+import {
+  toggleCartTotal,
+  deleteItemFromCart,
+} from '../redux/features/cartSlice';
 
-const CartItem = ({ color, id, img, name, price, total }) => {
-  return <Wrapper>cart item</Wrapper>;
+const CartItem = ({ color, id, img, name, price, total, stock }) => {
+  const dispatch = useDispatch();
+
+  const incTotal = () => {
+    if (total === stock) return;
+
+    dispatch(toggleCartTotal({ id, type: 'inc' }));
+  };
+
+  const decTotal = () => {
+    if (total === 1) return;
+
+    dispatch(toggleCartTotal({ id, type: 'dec' }));
+  };
+
+  return (
+    <Wrapper>
+      <div className='title'>
+        <img src={img.url} alt={name} />
+        <div>
+          <h5 className='name'>{name}</h5>
+          <p className='color'>
+            color: <span style={{ background: color }}></span>
+          </p>
+          <h5 className='price-small'>{formatPrice(price)}</h5>
+        </div>
+      </div>
+      <h5 className='price'>{formatPrice(price)}</h5>
+      <AmountButtons total={total} incTotal={incTotal} decTotal={decTotal} />
+      <h5 className='subtotal'>{formatPrice(price * total)}</h5>
+      <button
+        className='remove-btn'
+        onClick={() => dispatch(deleteItemFromCart(id))}
+      >
+        <FaTrash />
+      </button>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.article`

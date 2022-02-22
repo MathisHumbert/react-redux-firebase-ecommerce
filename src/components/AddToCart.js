@@ -24,7 +24,7 @@ const AddToCart = () => {
   };
 
   const handleAddToCart = () => {
-    const { colors, id, price, name, images } = product;
+    const { colors, id, price, name, images, stock } = product;
     const color = colors[colorIndex];
     let cartId = `${id}${color}`;
 
@@ -35,6 +35,7 @@ const AddToCart = () => {
       price,
       img: images[0],
       total,
+      stock,
     };
 
     dispatch(addItemToCart({ cartItem: item, total }));
