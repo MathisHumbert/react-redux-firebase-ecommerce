@@ -5,11 +5,14 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeSidebar } from '../redux/features/productsSlice';
 import { toggleCartInfo } from '../redux/features/cartSlice';
+import { openLoggin } from '../redux/features/userSlice';
 
 const CartButtons = () => {
   const dispatch = useDispatch();
   const { cart, total } = useSelector((state) => state.cart);
-  const loggedIn = false;
+  const { userLoggedIn } = useSelector((state) => state.user);
+
+  const logoutUser = () => {};
 
   useEffect(() => {
     dispatch(toggleCartInfo());
@@ -29,17 +32,15 @@ const CartButtons = () => {
         </span>
       </Link>
       {/* LOGIN FUNCTIONALITY */}
-      <button className='auth-btn' type='button'>
-        {loggedIn ? (
-          <>
-            Logout <FaUserMinus />
-          </>
-        ) : (
-          <>
-            Login <FaUserPlus />
-          </>
-        )}
-      </button>
+      {userLoggedIn ? (
+        <button className='auth-btn' onClick={logoutUser}>
+          Logout <FaUserMinus />
+        </button>
+      ) : (
+        <button onClick={() => dispatch(openLoggin())} className='auth-btn'>
+          Login <FaUserPlus />
+        </button>
+      )}
     </Wrapper>
   );
 };
