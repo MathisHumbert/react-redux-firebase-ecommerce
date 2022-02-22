@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, Sidebar, Footer, LogginSignup } from './components';
+import { Navbar, Sidebar, Footer, LoginSignup } from './components';
 import {
   About,
   Cart,
@@ -15,7 +15,7 @@ function App() {
     <Router>
       <Navbar />
       <Sidebar />
-      <LogginSignup />
+      <LoginSignup />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />

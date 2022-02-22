@@ -4,23 +4,28 @@ const initialState = {
   user: {
     name: '',
     email: '',
+    id: '',
   },
   userLoggedIn: false,
-  isLogginOpen: false,
+  isLoginOpen: false,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducer: {
-    openLoggin: (state) => {
-      state.isLogginOpen = true;
+  reducers: {
+    openLogin: (state) => {
+      state.isLoginOpen = true;
     },
     closeLoggin: (state) => {
-      state.isLogginOpen = false;
+      state.isLoginOpen = false;
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+      state.userLoggedIn = true;
     },
   },
 });
 
-export const { openLoggin, closeLoggin } = userSlice.actions;
+export const { openLogin, closeLoggin, setUser } = userSlice.actions;
 export default userSlice.reducer;

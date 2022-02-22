@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeSidebar } from '../redux/features/productsSlice';
 import { toggleCartInfo } from '../redux/features/cartSlice';
-import { openLoggin } from '../redux/features/userSlice';
+import { openLogin } from '../redux/features/userSlice';
 
 const CartButtons = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,13 @@ const CartButtons = () => {
           Logout <FaUserMinus />
         </button>
       ) : (
-        <button onClick={() => dispatch(openLoggin())} className='auth-btn'>
+        <button
+          className='auth-btn'
+          onClick={() => {
+            dispatch(closeSidebar());
+            dispatch(openLogin());
+          }}
+        >
           Login <FaUserPlus />
         </button>
       )}

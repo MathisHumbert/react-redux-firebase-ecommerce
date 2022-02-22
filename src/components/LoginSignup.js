@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { closeLoggin } from '../redux/features/userSlice';
+import { auth } from '../firebase.config';
+import { closeLoggin, setUser } from '../redux/features/userSlice';
 
-const LogginSignup = () => {
+const LoginSignup = () => {
   const dispatch = useDispatch();
-  const { userLoggedIn } = useSelector((state) => state.user);
+  const { isLoginOpen } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -28,13 +30,32 @@ const LogginSignup = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password || (!login && !name)) return;
+
+    // LOGIN
+    if (login) {
+    }
+    // SIGN UP
+    else {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(auth.currentUser, { displayName: name });
+      const user = userCredential.user;
+      dispatch(setUser({ name: name, id: user.uid, email }));
+    }
+
+    dispatch(closeLoggin());
   };
 
   return (
     <Wrapper
-      className={userLoggedIn ? 'wrapper open' : ' wrapper'}
+      className={isLoginOpen ? 'wrapper open' : ' wrapper'}
       onClick={handleWrapper}
     >
       <form onSubmit={onSubmit}>
@@ -145,4 +166,4 @@ const Wrapper = styled.aside`
   }
 `;
 
-export default LogginSignup;
+export default LoginSignup;
