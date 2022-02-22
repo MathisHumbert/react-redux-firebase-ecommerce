@@ -1,9 +1,11 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
 import { Link } from 'react-router-dom';
+import { openLogin } from '../redux/features/userSlice';
 
 const CartTotals = () => {
+  const dispatch = useDispatch();
   const { amount } = useSelector((state) => state.cart);
   const { userLoggedIn } = useSelector((state) => state.user);
 
@@ -20,9 +22,15 @@ const CartTotals = () => {
           <hr />
           <h4>order total : {formatPrice(amount + 534)}</h4>
         </article>
-        <Link to={`${userLoggedIn ? '/chekout' : '/login'}`} className='btn'>
-          {userLoggedIn ? 'proceed to checkout' : 'login'}
-        </Link>
+        {userLoggedIn ? (
+          <Link to='/checkout' className='btn'>
+            proceed to checkout
+          </Link>
+        ) : (
+          <button className='btn' onClick={() => dispatch(openLogin())}>
+            login
+          </button>
+        )}
       </div>
     </Wrapper>
   );

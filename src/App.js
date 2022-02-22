@@ -12,6 +12,7 @@ import {
   Home,
   Products,
   SingleProduct,
+  PrivateRoute,
 } from './pages';
 import { setUser } from './redux/features/userSlice';
 
@@ -39,9 +40,9 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/products' element={<Products />} />
         <Route path='/cart' element={<Cart />} />
-        {/* START PRIVATE */}
-        <Route path='/checkout' element={<Checkout />} />
-        {/* END PRIVATE */}
+        <Route path='/' element={<PrivateRoute />}>
+          <Route path='checkout' element={<Checkout />} />
+        </Route>
         <Route path='/products/:id' element={<SingleProduct />} />
         <Route path='*' element={<Error />} />
       </Routes>

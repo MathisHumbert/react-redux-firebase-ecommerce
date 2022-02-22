@@ -10,6 +10,7 @@ import CartButtons from './CartButtons';
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { isSidebarOpen } = useSelector((state) => state.products);
+  const { userLoggedIn } = useSelector((state) => state.user);
 
   return (
     <SidebarContainer>
@@ -32,6 +33,15 @@ const Sidebar = () => {
               </li>
             );
           })}
+          {userLoggedIn ? (
+            <li>
+              <Link to='/checkout' onClick={() => dispatch(closeSidebar())}>
+                checkout
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
         </ul>
         <CartButtons />
       </aside>

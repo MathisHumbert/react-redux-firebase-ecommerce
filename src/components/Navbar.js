@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import logo from '../assets/logo.svg';
 import { FaBars } from 'react-icons/fa';
@@ -9,6 +9,7 @@ import CartButtons from './CartButtons';
 
 const Nav = () => {
   const dispatch = useDispatch();
+  const { userLoggedIn } = useSelector((state) => state.user);
 
   return (
     <NavContainer>
@@ -34,6 +35,13 @@ const Nav = () => {
               </li>
             );
           })}
+          {userLoggedIn ? (
+            <li>
+              <Link to='/checkout'>checkout</Link>
+            </li>
+          ) : (
+            ''
+          )}
         </ul>
         <CartButtons />
       </div>
