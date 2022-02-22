@@ -3,16 +3,20 @@ import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { auth } from '../firebase.config';
 import { closeSidebar } from '../redux/features/productsSlice';
 import { toggleCartInfo } from '../redux/features/cartSlice';
-import { openLogin } from '../redux/features/userSlice';
+import { openLogin, resetUser } from '../redux/features/userSlice';
 
 const CartButtons = () => {
   const dispatch = useDispatch();
   const { cart, total } = useSelector((state) => state.cart);
   const { userLoggedIn } = useSelector((state) => state.user);
 
-  const logoutUser = () => {};
+  const logoutUser = () => {
+    auth.signOut();
+    dispatch(resetUser());
+  };
 
   useEffect(() => {
     dispatch(toggleCartInfo());

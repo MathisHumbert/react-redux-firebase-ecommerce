@@ -9,7 +9,6 @@ const FeaturedProducts = () => {
   const { featuredProducts, isProductsLoading, isProductsError } = useSelector(
     (state) => state.products
   );
-  console.log(featuredProducts.slice(0, 3));
 
   if (isProductsLoading) {
     return <Loading />;

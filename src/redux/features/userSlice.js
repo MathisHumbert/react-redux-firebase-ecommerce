@@ -24,8 +24,22 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.userLoggedIn = true;
     },
+    resetUser: (state) => {
+      state.userLoggedIn = false;
+      state.user = {
+        name: '',
+        email: '',
+        id: '',
+      };
+    },
   },
 });
 
-export const { openLogin, closeLoggin, setUser } = userSlice.actions;
+export const { openLogin, closeLoggin, setUser, resetUser } = userSlice.actions;
 export default userSlice.reducer;
+
+// login
+// logout
+// persist user
+// private route for checkout
+// show checkout link in nav and sidebar if user is logged in

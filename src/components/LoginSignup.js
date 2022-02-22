@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { auth } from '../firebase.config';
@@ -37,6 +41,15 @@ const LoginSignup = () => {
 
     // LOGIN
     if (login) {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      dispatch(
+        setUser({ name: user.displayName, id: user.uid, email: user.email })
+      );
     }
     // SIGN UP
     else {
@@ -47,6 +60,7 @@ const LoginSignup = () => {
       );
       updateProfile(auth.currentUser, { displayName: name });
       const user = userCredential.user;
+      console.log(user);
       dispatch(setUser({ name: name, id: user.uid, email }));
     }
 

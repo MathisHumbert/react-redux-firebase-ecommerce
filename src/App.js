@@ -1,4 +1,8 @@
+import { useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { auth } from './firebase.config';
 import { Navbar, Sidebar, Footer, LoginSignup } from './components';
 import {
   About,
@@ -9,8 +13,22 @@ import {
   Products,
   SingleProduct,
 } from './pages';
+import { setUser } from './redux/features/userSlice';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(
+          setUser({ name: user.displayName, id: user.uid, email: user.email })
+        );
+      }
+      return () => unsub;
+    });
+  });
+
   return (
     <Router>
       <Navbar />
