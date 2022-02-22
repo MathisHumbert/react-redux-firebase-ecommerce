@@ -17,11 +17,11 @@ import { Link } from 'react-router-dom';
 const SingleProductPage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { isProductSuccess, isProductLoading, isProductError, product } =
-    useSelector((state) => state.products);
+  const { isProductLoading, isProductError, product } = useSelector(
+    (state) => state.products
+  );
 
   useEffect(() => {
-    if (isProductSuccess) return;
     dispatch(getProduct(id));
   }, []);
 

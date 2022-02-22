@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { clearCart } from '../redux/features/cartSlice';
 import CartColumns from './CartColumns';
 import CartItem from './CartItem';
 import CartTotals from './CartTotals';
 
 const CartContent = () => {
+  const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
 
   return (
@@ -18,7 +20,11 @@ const CartContent = () => {
         <Link to='/products' className='link-btn'>
           continue shopping
         </Link>
-        <button type='button' to='/products' className='link-btn clear-btn'>
+        <button
+          type='button'
+          className='link-btn clear-btn'
+          onClick={() => dispatch(clearCart())}
+        >
           clear shopping cart
         </button>
       </div>

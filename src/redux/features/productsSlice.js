@@ -13,7 +13,6 @@ const initialState = {
   isProductsSuccess: false,
   isProductLoading: false,
   isProductError: false,
-  isProductSuccess: false,
   isSidebarOpen: false,
 };
 
@@ -69,11 +68,9 @@ export const productsSlice = createSlice({
     [getProduct.pending]: (state) => {
       state.isProductLoading = true;
       state.isProductError = false;
-      state.isProductSuccess = false;
     },
     [getProduct.fulfilled]: (state, action) => {
       state.isProductLoading = false;
-      state.isProductSuccess = true;
       state.product = action.payload;
     },
     [getProduct.rejected]: (state) => {
